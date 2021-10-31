@@ -5,10 +5,7 @@
 [смотри по ссылке](https://drive.google.com/file/d/1oXCGyiq4uKwW0zzraZLKk4lh3voBlBzZ/view?usp=sharing).
 
 Создай компоненты `<Searchbar>`, `<ImageGallery>`, `<ImageGalleryItem>`,
-`<Loader>`, `<Button>` и `<Modal>`. Готовые стили компонентов можно взять в
-файле [styles.css](./styles.css) и подправить под себя, если необходимо.
-
-![preview](./mockup/preview.jpg)
+`<Loader>`, `<Button>` и `<Modal>`. 
 
 ## Инструкция Pixabay API
 
