@@ -43,8 +43,11 @@ class App extends Component {
     api
       .getImages({ query, page })
       .then((response) => {
+        console.log(query);
+        console.log(page);
+        console.log(response);
         this.setState((prevState) => ({
-          images: [...prevState.images, ...mapper(response.results)],
+          images: [...prevState.images, ...mapper(response)],
           page: prevState.page + 1,
         }));
       })
