@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import style from "./App.css";
 import mapper from "../helpers/Mapper";
@@ -7,6 +7,8 @@ import * as api from "../Service/ServiceAPI";
 import SearchBar from "./SearchBar";
 import ImageGallery from "./ImageGallery";
 import Modal from "./Modal";
+import Button from "./Button";
+import Spinner from "./Spinner";
 
 class App extends Component {
   state = {
@@ -23,10 +25,15 @@ class App extends Component {
     if (prevState.query !== this.state.query) {
       this.getImages();
     }
+    if (prevState.currentPage !== this.state.currentPage) {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }
 
   onChangeQuery = (query) => {
-    console.log(query);
     this.setState({ page: 1, images: [], query, error: null });
   };
 
@@ -37,8 +44,6 @@ class App extends Component {
 
   getImages = () => {
     const { page, query } = this.state;
-    console.log(query);
-    console.log(page);
 
     this.setState({
       isLoading: true,
@@ -46,15 +51,16 @@ class App extends Component {
     api
       .getImages({ query, page })
       .then((response) => {
-        console.log(query);
-        console.log(page);
-        console.log(response);
         this.setState((prevState) => ({
           images: [...prevState.images, ...mapper(response)],
           page: prevState.page + 1,
         }));
       })
-      .catch((error) => this.setState({ error: error }))
+      .catch((error) =>
+        this.setState({
+          error: toast.error("Woops, something went wrong... Try again later."),
+        })
+      )
       .finally(() => this.setState({ isLoading: false }));
   };
 
@@ -73,11 +79,16 @@ class App extends Component {
   };
 
   render() {
-    const { images, showModal, largeImage } = this.state;
+    const { images, showModal, largeImage, isLoading } = this.state;
+    const renderLoadMoreBtn = images.length > 0 && !isLoading;
     return (
       <div className={style.App}>
         <SearchBar onSubmit={this.onChangeQuery} />
         <ImageGallery images={images} onClickImg={this.openModal} />
+        {renderLoadMoreBtn && (
+          <Button getImages={this.getImages}>load more</Button>
+        )}
+        {isLoading && <Spinner />}
         {showModal && (
           <Modal
             onClose={this.toggleModal}

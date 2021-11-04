@@ -25,7 +25,6 @@ class SearchForm extends Component {
     }
 
     this.props.onSubmit(query);
-    console.log(query);
     this.setState({ query: "" });
   };
   render() {
