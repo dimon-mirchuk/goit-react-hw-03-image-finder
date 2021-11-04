@@ -1,11 +1,14 @@
 import PropTypes from "prop-types";
+import styles from "./ImageGalleryItem.module.css";
+
+const { imageGalleryItem, imageGalleryItemImage } = styles;
 
 const ImageGalleryItem = ({ images }) => {
   return (
     <>
       {images.map(({ id, webformatURL, largeImageURL }) => (
-        <li className="ImageGalleryItem" key={id}>
-          <img src={webformatURL} alt="" className="ImageGalleryItem-image" />
+        <li className={imageGalleryItem} key={id}>
+          <img src={webformatURL} alt="" className={imageGalleryItemImage} />
         </li>
       ))}
     </>

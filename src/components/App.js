@@ -1,19 +1,22 @@
 import { Component } from "react";
-import "./App.css";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import style from "./App.css";
+import mapper from "../helpers/Mapper";
 import * as api from "../Service/ServiceAPI";
 import SearchBar from "./SearchBar";
 import ImageGallery from "./ImageGallery";
-import mapper from "../helpers/Mapper";
+import Modal from "./Modal";
 
 class App extends Component {
   state = {
     page: 1,
     images: [],
     query: "",
-    largeImageURL: "",
+    largeImage: "",
     isLoading: false,
     error: null,
+    showModal: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -24,7 +27,7 @@ class App extends Component {
 
   onChangeQuery = (query) => {
     console.log(query);
-    this.setState({ query });
+    this.setState({ page: 1, images: [], query, error: null });
   };
 
   onSubmit = (event) => {
@@ -55,14 +58,31 @@ class App extends Component {
       .finally(() => this.setState({ isLoading: false }));
   };
 
+  toggleModal = () => {
+    this.SetState(({ showModal }) => ({ showModal: !showModal }));
+  };
+
+  openModal = (modalImg) => {
+    this.SetState(() => ({ largeImage: modalImg }));
+    this.toggleModal();
+  };
+
+  closeModal = () => {
+    this.SetState({ largeImage: "" });
+    this.toggleModal();
+  };
+
   render() {
-    const { images } = this.state;
+    const { images, showModal, largeImage } = this.state;
     return (
-      <>
+      <div className={style.App}>
         <SearchBar onSubmit={this.onChangeQuery} />
-        <ImageGallery images={images} />;
+        <ImageGallery images={images} />
+        {showModal && (
+          <Modal onClose={this.toggleModal} modalImg={largeImage} />
+        )}
         <ToastContainer />
-      </>
+      </div>
     );
   }
 }
