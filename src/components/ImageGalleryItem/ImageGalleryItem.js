@@ -3,12 +3,17 @@ import styles from "./ImageGalleryItem.module.css";
 
 const { imageGalleryItem, imageGalleryItemImage } = styles;
 
-const ImageGalleryItem = ({ images }) => {
+const ImageGalleryItem = ({ images, onClickImg }) => {
   return (
     <>
       {images.map(({ id, webformatURL, largeImageURL }) => (
         <li className={imageGalleryItem} key={id}>
-          <img src={webformatURL} alt="" className={imageGalleryItemImage} />
+          <img
+            src={webformatURL}
+            alt=""
+            className={imageGalleryItemImage}
+            onClick={() => onClickImg({ largeImageURL })}
+          />
         </li>
       ))}
     </>

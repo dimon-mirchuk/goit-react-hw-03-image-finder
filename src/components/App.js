@@ -59,16 +59,16 @@ class App extends Component {
   };
 
   toggleModal = () => {
-    this.SetState(({ showModal }) => ({ showModal: !showModal }));
+    this.setState(({ showModal }) => ({ showModal: !showModal }));
   };
 
-  openModal = (modalImg) => {
-    this.SetState(() => ({ largeImage: modalImg }));
+  openModal = (modalImage) => {
+    this.setState(() => ({ largeImage: modalImage }));
     this.toggleModal();
   };
 
   closeModal = () => {
-    this.SetState({ largeImage: "" });
+    this.setState({ largeImage: "" });
     this.toggleModal();
   };
 
@@ -77,9 +77,12 @@ class App extends Component {
     return (
       <div className={style.App}>
         <SearchBar onSubmit={this.onChangeQuery} />
-        <ImageGallery images={images} />
+        <ImageGallery images={images} onClickImg={this.openModal} />
         {showModal && (
-          <Modal onClose={this.toggleModal} modalImg={largeImage} />
+          <Modal
+            onClose={this.toggleModal}
+            modalImg={largeImage.largeImageURL}
+          />
         )}
         <ToastContainer />
       </div>
