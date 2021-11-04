@@ -25,7 +25,7 @@ class App extends Component {
     if (prevState.query !== this.state.query) {
       this.getImages();
     }
-    if (prevState.currentPage !== this.state.currentPage) {
+    if (prevState.page !== this.state.page) {
       window.scrollTo({
         top: document.documentElement.scrollHeight,
         behavior: "smooth",
