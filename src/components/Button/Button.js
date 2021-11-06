@@ -3,17 +3,18 @@ import styles from "./Button.module.css";
 
 const { wrapper, button } = styles;
 
-const Button = ({ getImages, children }) => (
-  <div className={wrapper}>
-    <button type="button" className={button} onClick={getImages}>
-      {children}
-    </button>
-  </div>
-);
+const Button = ({ LoadMore }) => {
+  return (
+    <div className={wrapper}>
+      <button type="button" className={button} onClick={LoadMore}>
+        load more
+      </button>
+    </div>
+  );
+};
 
 Button.propTypes = {
-  getImages: PropTypes.func.isRequired,
-  children: PropTypes.string.isRequired,
+  LoadMore: PropTypes.func.isRequired,
 };
 
 export default Button;

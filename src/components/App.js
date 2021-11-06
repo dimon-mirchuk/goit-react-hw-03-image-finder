@@ -21,15 +21,9 @@ class App extends Component {
     showModal: false,
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.query !== this.state.query) {
+  componentDidUpdate(prevProps, { query, page }) {
+    if (query !== this.state.query || page !== this.state.page) {
       this.getImages();
-    }
-    if (prevState.page !== this.state.page) {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: "smooth",
-      });
     }
   }
 
@@ -42,26 +36,21 @@ class App extends Component {
     this.getImages();
   };
 
-  getImages = () => {
-    const { page, query } = this.state;
-
-    this.setState({
-      isLoading: true,
+  onLoadMore = () => {
+    this.setState(({ page }) => {
+      return {
+        page: page + 1,
+      };
     });
-    api
-      .getImages({ query, page })
-      .then((response) => {
-        this.setState((prevState) => ({
-          images: [...prevState.images, ...mapper(response)],
-          page: prevState.page + 1,
-        }));
-      })
-      .catch((error) =>
-        this.setState({
-          error: toast.error("Woops, something went wrong... Try again later."),
-        })
-      )
-      .finally(() => this.setState({ isLoading: false }));
+  };
+
+  handleScroll = () => {
+    if (this.state.page > 1) {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   };
 
   toggleModal = () => {
@@ -78,16 +67,40 @@ class App extends Component {
     this.toggleModal();
   };
 
+  getImages = () => {
+    const { page, query } = this.state;
+
+    this.setState({
+      isLoading: true,
+    });
+    api
+      .getImages({ query, page })
+      .then((response) => {
+        this.setState((prevState) => ({
+          images: [...prevState.images, ...mapper(response)],
+        }));
+      })
+      .catch((error) =>
+        this.setState({
+          error: toast.error("Woops, something went wrong... Try again later."),
+        })
+      )
+      .finally(() => {
+        this.setState({ isLoading: false });
+        this.handleScroll();
+      });
+  };
+
   render() {
     const { images, showModal, largeImage, isLoading } = this.state;
-    const renderLoadMoreBtn = images.length > 0 && !isLoading;
+    const renderContent = images.length > 0 && !isLoading;
     return (
       <div className={style.App}>
         <SearchBar onSubmit={this.onChangeQuery} />
-        <ImageGallery images={images} onClickImg={this.openModal} />
-        {renderLoadMoreBtn && (
-          <Button getImages={this.getImages}>load more</Button>
+        {images.length > 0 && (
+          <ImageGallery images={images} onClickImg={this.openModal} />
         )}
+        {renderContent && <Button LoadMore={this.onLoadMore}></Button>}
         {isLoading && <Spinner />}
         {showModal && (
           <Modal

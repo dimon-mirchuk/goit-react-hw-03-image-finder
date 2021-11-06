@@ -3,31 +3,25 @@ import styles from "./ImageGalleryItem.module.css";
 
 const { imageGalleryItem, imageGalleryItemImage } = styles;
 
-const ImageGalleryItem = ({ images, onClickImg }) => {
+const ImageGalleryItem = ({ webformatURL, largeImageURL, onClickImg }) => {
   return (
     <>
-      {images.map(({ id, webformatURL, largeImageURL }) => (
-        <li className={imageGalleryItem} key={id}>
-          <img
-            src={webformatURL}
-            alt=""
-            className={imageGalleryItemImage}
-            onClick={() => onClickImg({ largeImageURL })}
-          />
-        </li>
-      ))}
+      <li className={imageGalleryItem}>
+        <img
+          src={webformatURL}
+          alt=""
+          className={imageGalleryItemImage}
+          onClick={() => onClickImg({ largeImageURL })}
+        />
+      </li>
     </>
   );
 };
 
 ImageGalleryItem.propTypes = {
-  images: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      webformatURL: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.string.isRequired,
-    }).isRequired
-  ).isRequired,
+  webformatURL: PropTypes.string.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
+  onClickImg: PropTypes.func.isRequired,
 };
 
 export default ImageGalleryItem;
