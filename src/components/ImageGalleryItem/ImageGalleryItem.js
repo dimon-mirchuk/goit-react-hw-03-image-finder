@@ -5,16 +5,14 @@ const { imageGalleryItem, imageGalleryItemImage } = styles;
 
 const ImageGalleryItem = ({ webformatURL, largeImageURL, onClickImg }) => {
   return (
-    <>
-      <li className={imageGalleryItem}>
-        <img
-          src={webformatURL}
-          alt=""
-          className={imageGalleryItemImage}
-          onClick={() => onClickImg({ largeImageURL })}
-        />
-      </li>
-    </>
+    <li className={imageGalleryItem}>
+      <img
+        src={webformatURL}
+        alt=""
+        className={imageGalleryItemImage}
+        onClick={() => onClickImg({ largeImageURL })}
+      />
+    </li>
   );
 };
 

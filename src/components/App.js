@@ -100,7 +100,7 @@ class App extends Component {
         {images.length > 0 && (
           <ImageGallery images={images} onClickImg={this.openModal} />
         )}
-        {renderContent && <Button LoadMore={this.onLoadMore}></Button>}
+        {renderContent && <Button LoadMore={this.onLoadMore} />}
         {isLoading && <Spinner />}
         {showModal && (
           <Modal

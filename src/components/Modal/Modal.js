@@ -1,11 +1,17 @@
 import { Component } from "react";
 import { createPortal } from "react-dom";
+import PropTypes from "prop-types";
 import styles from "./Modal.module.css";
 
 const { overlay, modal } = styles;
 const modalRoot = document.querySelector("#modal-root");
 
 class Modal extends Component {
+  static propTypes = {
+    onClose: PropTypes.func.isRequired,
+    modalImg: PropTypes.string.isRequired,
+  };
+
   componentDidMount() {
     window.addEventListener("keydown", this.handleKeydown);
   }
